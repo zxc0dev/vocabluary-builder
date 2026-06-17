@@ -1,7 +1,9 @@
-DROP TABLE IF EXISTS vocab
+DROP TABLE IF EXISTS words CASCADE;
+DROP TABLE IF EXISTS sentences CASCADE;
+DROP TABLE IF EXISTS reviews CASCADE;
 
-CREATE TABLE vocab (
-    id INT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS words (
+    id SERIAL PRIMARY KEY,
     word_lang VARCHAR(2) NOT NULL,
     word_sk VARCHAR(64) NOT NULL,
     word_en VARCHAR(64) NOT NULL,
@@ -9,4 +11,19 @@ CREATE TABLE vocab (
     added_at DATE DEFAULT CURRENT_DATE,
     next_review_date DATE DEFAULT (CURRENT_DATE + INTERVAL '3 days'),
     current_interval_days INT DEFAULT 3
+);
+
+CREATE TABLE IF NOT EXISTS sentences (
+    id SERIAL PRIMARY KEY,
+    word_id INT NOT NULL REFERENCES words(id),
+    sentence VARCHAR(1024) NOT NULL UNIQUE,
+    added_at DATE DEFAULT CURRENT_DATE,
+    reviewed BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
+    word_id INT NOT NULL REFERENCES words(id),
+    reviewed_at DATE DEFAULT CURRENT_DATE,
+    quality SMALLINT NOT NULL CHECK(quality<=5)
 );
