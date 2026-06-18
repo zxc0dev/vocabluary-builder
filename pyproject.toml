@@ -8,5 +8,6 @@ dependencies = [
     "loguru>=0.7.3",
     "psycopg>=3.3.4",
     "python-dotenv>=1.2.2",
+    "ruff>=0.15.17",
     "sqlalchemy>=2.0.51",
 ]
